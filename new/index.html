@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+	<script type="text/javascript" src="../jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<title>Text editor!</title>
+</head>
+<body>
+	<div class="jumbotron">
+		<h1 style="text-align: center;">Simple Text Editor/Notepad</h1>
+	</div>
+	<div class="container">
+		<div class="col-md-12 col-sm-12">
+			<input class="title" placeholder="Enter the title here ..." />
+			<div id="editor">
+				<div class="content" contenteditable ></div>
+			</div>
+		</div>
+		<button type="button" onclick="replace()">Replace</button>
+	</div>
+	
+	<div id="tooltip">
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary" onclick="bold()"><strong>B</strong></button>
+			<button type="button" class="btn btn-primary" onclick="underline()"><span style="text-decoration: underline;">U</span></button>
+			<button type="button" class="btn btn-primary" onclick="highlight()">Highlight</button>
+		</div>
+	</div>
+</body>
+<style type="text/css">
+	.title{
+		border: none;
+		outline: none;
+		padding-top: 10px;
+		font-size: 3em;
+		width: 100%;
+		border-bottom: 1px solid #f5f5f0;
+		margin-bottom: 30px;
+	}
+	.content{
+		font-size: 2em;
+		outline: none;
+		border: 5px solid #f5f5f0;
+		height: 100%;
+		width: 100%;
+		padding-bottom: 50px;
+	}
+	#tooltip {
+		background-color: #000;
+		display: inline-block;
+		padding-top: 5px;
+		padding-right: 5px;
+		padding-bottom: 5px;
+		padding-left: 5px;
+		border: 1px solid;
+		border-color: #3333FF;
+	}
+</style>
+<script type="text/javascript">
+	var post_title = document.getElementsByClassName('title')[0];
+	console.log(post_title);
+	post_title.onclick = function(){
+		post_title.setAttribute('placeholder','');
+	};
+
+	$( "div[contenteditable]" ).keyup(function(){
+		$(this).contents()
+		.filter(function() {
+			return this.nodeType === 3;
+		})
+		.wrap( "<p draggable=\"true\"></p>" )
+		.end();
+	});
+	$(document).ready(function () {
+		$("#tooltip").hide();
+		$('#editor').dblclick(function (e) {
+			var x = e.clientX-70;
+			var y = e.clientY-70;
+			placeTooltip(x, y);
+			$("#tooltip").show();
+		});
+
+	});
+	$(document).click(function(){
+		$('#tooltip').hide();
+	})
+	function getSelectionText() {
+		var text = "";
+		if (window.getSelection) {
+			text = window.getSelection().toString();
+		} else if (document.selection && document.selection.type != "Control") {
+			text = document.selection.createRange().text;
+		}
+		return text;
+	}
+
+
+	function placeTooltip(x_pos, y_pos) {
+		var d = document.getElementById('tooltip');
+		d.style.position = "absolute";
+		d.style.left = x_pos + 'px';
+		d.style.top = y_pos + 'px';
+	}
+
+	function bold(){
+		document.execCommand('bold');
+	}
+	function underline(){
+		document.execCommand('underline');
+	}
+	function highlight(){
+		document.execCommand('foreColor',true,'red');
+		//the only thing that disturbs is it doesn't go back to original state
+	}
+</script>
+<script type="text/javascript">
+	var random = [];
+	//Finding all the text in the document
+	function RandomWord() {
+		var requestStr = "http://randomword.setgetgo.com/get.php";
+
+		$.ajax({
+			type: "GET",
+			url: requestStr,
+			dataType: "jsonp",
+			jsonpCallback: 'RandomWordComplete'
+		});
+	}
+	function RandomWordComplete(data) {
+		if(random.length === 100){
+			return ;
+		}
+		else{
+			random.push(data.Word);
+			console.log(random);
+		}
+	}
+	setInterval(RandomWord,1000);
+	function replace(){
+		var words = [];
+
+		var walkDOM = function (node, func) {
+			func(node);
+			node = node.firstChild;
+			while(node) {
+				walkDOM(node, func);
+				node = node.nextSibling;
+			}
+
+		};
+		var j = 0;
+		var url = "http://randomword.setgetgo.com/get.php";
+		walkDOM(document.getElementById('editor'), function (node) {
+
+			if (node.nodeName === '#text') {
+				var text = node.textContent;
+
+				text = text.replace(/[^A-Za-z]/g, ' ');
+				text = text.split(' ');
+				if (text.length) {
+					/*console.log(text);*/
+					for (var i = 0, length = text.length; i < length; i += 1) {
+						var matched = false,
+						word = text[i];
+						if(word.length === 4){
+							//console.log(word);
+							//word = random[j];
+							$("#editor").children().each(function () {
+								$(this).html( $(this).html().replace('/'+word+'/g',"$") );
+							});
+							j++;
+						}				
+
+					}
+				}
+			}
+		});
+
+		var displayWordList = function (words) {
+			for (var i = 0, length = words.length; i < length; i ++) {
+				console.log(words[i][0]);
+			}
+		};
+
+		displayWordList(words);	
+	}
+</script>
+</html>
