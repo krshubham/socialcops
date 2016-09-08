@@ -166,10 +166,10 @@
 						if(word.length === 4){
 							//console.log(word);
 							//word = random[j];
-							$("#editor").children().each(function () {
-								$(this).html( $(this).html().replace('/'+word+'/g',"$") );
+							$("div.content").children().each(function () {
+								$(this).text($(this).text().replace(word,random[j]));
+								j++;
 							});
-							j++;
 						}				
 
 					}
