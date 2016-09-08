@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 	<script type="text/javascript" src="../jquery.js"></script>
+	<script type="text/javascript" src="sortable.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<title>Text editor!</title>
 </head>
@@ -14,10 +15,11 @@
 		<div class="col-md-12 col-sm-12">
 			<input class="title" placeholder="Enter the title here ..." />
 			<div id="editor">
-				<div class="content" contenteditable ></div>
+				<div class="content" contenteditable id="main-editor"></div>
 			</div>
 		</div>
-		<button type="button" onclick="replace()">Replace</button>
+		<button type="button" onclick="replace()" class="btn btn-success">Replace</button>
+		<button type="button" onclick="done()" class="btn btn-danger">Done</button>
 	</div>
 	
 	<div id="tooltip">
@@ -28,6 +30,10 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	var list = document.getElementById("main-editor");
+	Sortable.create(list);
+</script>
 <style type="text/css">
 	.title{
 		border: none;
@@ -185,5 +191,30 @@
 
 		displayWordList(words);	
 	}
+	function done(){
+		/*// Detect links pattern
+		var exp = /(\b(http?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+		// Wrap the matched strings with `<span class="fake-link"></span>`
+		$('#editor').html($('#editor').html().replace(exp, "<span class='fake-link'>$1</span>"));
+
+		$('.fake-link').each(function() {
+		    // Extra job: Check if parent is an anchor
+		    if ($(this).parent().is('a')) {
+		        // If `true`, then unwrap the original anchor which has been written by default from `.fake-link`
+		        $(this).unwrap();
+		    }
+		    // Replace `.fake-link` with an anchor tag
+		    $(this).replaceWith('<a href="' + $(this).text() + '">' + $(this).text() + '</a>');
+		});*/
+		/*$( "#editor" )
+		.html()
+		.filter(function() {
+			return this.nodeType === 3;
+		})
+		.filter( "a" )
+		.remove();*/
+		console.log(document.getElementById('editor').innerHTML);
+	}
+
 </script>
 </html>
