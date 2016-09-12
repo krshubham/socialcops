@@ -142,7 +142,6 @@
 			console.log(random);
 		}
 	}
-	setInterval(RandomWord,1000);
 	function replace(){
 		var words = [];
 
@@ -191,29 +190,26 @@
 
 		displayWordList(words);	
 	}
+	var count = 0;
 	function done(){
-		/*// Detect links pattern
-		var exp = /(\b(http?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-		// Wrap the matched strings with `<span class="fake-link"></span>`
-		$('#editor').html($('#editor').html().replace(exp, "<span class='fake-link'>$1</span>"));
-
-		$('.fake-link').each(function() {
-		    // Extra job: Check if parent is an anchor
-		    if ($(this).parent().is('a')) {
-		        // If `true`, then unwrap the original anchor which has been written by default from `.fake-link`
-		        $(this).unwrap();
-		    }
-		    // Replace `.fake-link` with an anchor tag
-		    $(this).replaceWith('<a href="' + $(this).text() + '">' + $(this).text() + '</a>');
-		});*/
-		/*$( "#editor" )
-		.html()
-		.filter(function() {
-			return this.nodeType === 3;
-		})
-		.filter( "a" )
-		.remove();*/
-		console.log(document.getElementById('editor').innerHTML);
+		var requestStr = "http://randomword.setgetgo.com/get.php";
+		var a = $('p').toArray();
+		for (var i = 0; i < a.length; i++) {
+			var word = a[i].textContent.split(' ');
+			for (var j = 0; j < word.length; j++) {
+				if(word[j].length === 4){
+					count++;
+				}
+			}
+		}
+		/*for (var i = 0; i<=a.length; i++) {
+			var text = a[i].innerHTML;
+			console.log(text);
+			console.log(text.length);
+			for (var i = 0; i<=text.length; i++) {
+				console.log(text[i]);
+			}
+		}*/
 	}
 
 </script>
