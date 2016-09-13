@@ -18,8 +18,13 @@
 				<div class="content" contenteditable id="main-editor"></div>
 			</div>
 		</div>
-		<button type="button" onclick="replace()" class="btn btn-success">Replace</button>
-		<button type="button" onclick="done()" class="btn btn-danger">Done</button>
+		<div align="center">
+			<button type="button" onclick="replace()" class="btn btn-success">Replace</button>
+			<button type="button" onclick="done()" class="btn btn-danger">Done</button>
+		</div>
+	</div>
+	<div id="res" class="res_box">
+		
 	</div>
 	
 	<div id="tooltip">
@@ -121,6 +126,16 @@
 	}
 </script>
 <script type="text/javascript">
+	function replace(){
+		var editor =document.getElementById('main-editor');
+		var words = editor.innerHTML.match(/\b(?!true?!&nbsp)\w{4}\b/gi);
+		console.log(words);
+		for(i=0;i<words.length;i++)
+		{
+			editor.innerHTML=editor.innerHTML.replace(words[i],random[i]);
+		}
+	}
+	
 	var random = [];
 	//Finding all the text in the document
 	function RandomWord() {
@@ -134,83 +149,9 @@
 		});
 	}
 	function RandomWordComplete(data) {
-		if(random.length === 100){
-			return ;
-		}
-		else{
-			random.push(data.Word);
-			console.log(random);
-		}
+		alert(data.Word);
 	}
-	function replace(){
-		var words = [];
-
-		var walkDOM = function (node, func) {
-			func(node);
-			node = node.firstChild;
-			while(node) {
-				walkDOM(node, func);
-				node = node.nextSibling;
-			}
-
-		};
-		var j = 0;
-		var url = "http://randomword.setgetgo.com/get.php";
-		walkDOM(document.getElementById('editor'), function (node) {
-
-			if (node.nodeName === '#text') {
-				var text = node.textContent;
-
-				text = text.replace(/[^A-Za-z]/g, ' ');
-				text = text.split(' ');
-				if (text.length) {
-					/*console.log(text);*/
-					for (var i = 0, length = text.length; i < length; i += 1) {
-						var matched = false,
-						word = text[i];
-						if(word.length === 4){
-							//console.log(word);
-							//word = random[j];
-							$("div.content").children().each(function () {
-								$(this).text($(this).text().replace(word,random[j]));
-								j++;
-							});
-						}				
-
-					}
-				}
-			}
-		});
-
-		var displayWordList = function (words) {
-			for (var i = 0, length = words.length; i < length; i ++) {
-				console.log(words[i][0]);
-			}
-		};
-
-		displayWordList(words);	
-	}
-	var count = 0;
-	function done(){
-		var requestStr = "http://randomword.setgetgo.com/get.php";
-		var a = $('p').toArray();
-		for (var i = 0; i < a.length; i++) {
-			var word = a[i].textContent.split(' ');
-			for (var j = 0; j < word.length; j++) {
-				if(word[j].length === 4){
-					count++;
-				}
-			}
-		}
-		/*for (var i = 0; i<=a.length; i++) {
-			var text = a[i].innerHTML;
-			console.log(text);
-			console.log(text.length);
-			for (var i = 0; i<=text.length; i++) {
-				console.log(text[i]);
-			}
-		}*/
-	}
-
 </script>
+<script type="text/javascript" src="done.js"></script>
+<!-- <script type="text/javascript" src="replace.js"></script> -->
 </html>
