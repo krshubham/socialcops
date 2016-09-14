@@ -2,48 +2,55 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-	<script type="text/javascript" src="jquery.js"></script>
-	<script src="wysiwyg.js" type="text/javascriptd "></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script type="text/javascript" src="js/sortable.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<title>Text editor!</title>
 </head>
 <style type="text/css">
-	#tooltip {
-		background-color: #000;
-		display: inline-block;
-		padding-top: 5px;
-		padding-right: 5px;
-		padding-bottom: 5px;
-		padding-left: 5px;
-		border: 1px solid;
-		border-color: #3333FF;
-		border-radius: 15px;
-		z-index: 999;
+	.outer-editor{
+		margin-bottom: 1em;
 	}
-	span{
-		color: red;
+	.res_box{
+		width: 50%;
+		font-size: 1.5em;
 	}
 </style>
 <body>
 	<div class="jumbotron">
-		<h1>Simple Text Editor/Notepad</h1>
+		<h1 style="text-align: center;">Simple Text Editor/Notepad</h1>
 	</div>
 	<div class="container">
-		<div class="col-md-12 col-sm-12">
-			<h3 class="title" contenteditable="true">Enter the title here...</h3><hr />
+		<div class="col-md-12 col-sm-12 outer-editor">
+			<input class="title" placeholder="Enter the title here ..." />
 			<div id="editor">
-				<div class="content" contenteditable="true"><p draggable = "true" id="para">Click here...</p><br /></div>
-			</div><br />
-			<div class="col-md-offset-5 col-sm-offset-3">
-				<button type="button" class="btn btn-success" id="done">
-					Done
-				</button>
-				<button type="button" class="btn btn-danger" id="random">Randomize</button>
+				<div class="content" contenteditable id="main-editor"></div>
 			</div>
+		</div>
+		<div align="center">
+			<button type="button" onclick="replace()" class="btn btn-success">Replace</button>
+			<button type="button" onclick="done()" class="btn btn-danger">Done</button>
+		</div>
+	</div>
+	<div align="center">Links Found: </div>
+	<div id="links" class="res_box" align="center">
+
+	</div>
+	
+	<div id="tooltip">
+		<div class="btn-group">
+			<button type="button" class="btn btn-primary" onclick="bold()"><strong>B</strong></button>
+			<button type="button" class="btn btn-primary" onclick="underline()"><span style="text-decoration: underline;">U</span></button>
+			<button type="button" class="btn btn-primary" onclick="highlight()">Highlight</button>
 		</div>
 	</div>
 </body>
-<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript">
+	var list = document.getElementById("main-editor");
+	Sortable.create(list);
+</script>
+<script type="text/javascript" src="js/tooltips.js"></script>
+<script type="text/javascript" src="js/done.js"></script>
+<script type="text/javascript" src="js/replace.js"></script>
 </html>
